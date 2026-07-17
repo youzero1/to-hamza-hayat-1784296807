@@ -1,26 +1,20 @@
-import { ClipboardList } from 'lucide-react';
-import type { FilterType } from '../types/todo';
+import { ClipboardList } from "lucide-react";
+import type { FilterType } from "../types/todo";
 
 interface EmptyStateProps {
   filter: FilterType;
+  hasTodos: boolean;
 }
 
-export default function EmptyState({ filter }: EmptyStateProps) {
-  const messages: Record<FilterType, { title: string; subtitle: string }> = {
-    all: { title: 'No todos yet', subtitle: 'Add your first task above to get started!' },
-    active: { title: 'All done!', subtitle: 'You\'ve completed everything. Nice work! 🎉' },
-    completed: { title: 'Nothing completed yet', subtitle: 'Start checking off some tasks!' },
-  };
-
-  const msg = messages[filter];
+export default function EmptyState({ filter, hasTodos }: EmptyStateProps) {
+  let message = "Add your first todo to get started!";
+  if (hasTodos && filter === "active") message = "All tasks are completed! 🎉";
+  if (hasTodos && filter === "completed") message = "No completed tasks yet.";
 
   return (
-    <div className="flex flex-col items-center justify-center py-12 text-center">
-      <div className="w-14 h-14 rounded-2xl bg-violet-50 flex items-center justify-center mb-4">
-        <ClipboardList size={28} className="text-violet-400" />
-      </div>
-      <p className="text-gray-700 font-medium">{msg.title}</p>
-      <p className="text-gray-400 text-sm mt-1">{msg.subtitle}</p>
+    <div className="flex flex-col items-center justify-center py-12 text-white/30">
+      <ClipboardList size={48} strokeWidth={1.5} className="mb-4" />
+      <p className="text-lg">{message}</p>
     </div>
   );
 }
